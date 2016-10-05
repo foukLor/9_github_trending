@@ -8,7 +8,7 @@ You can see trend repositories and issues of these repos
 ## Usage:
 
 ```sh
-python 
+python github_trending.py
 ```
 
 please use python version 3.5
