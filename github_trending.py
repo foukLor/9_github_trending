@@ -4,27 +4,28 @@ from datetime import date, timedelta
 
 def get_trending_repositories(top_size):
     date_week_ago = date.today() - timedelta(days=7)
-    url = "https://api.github.com/search/repositories?"\
-        "q=+created:>={0}&sort=stars&order=desc".format(date_week_ago)
-    response = requests.get(url)
-    return response.json()['items'][:top_size]
-
-
-def get_open_issues_amount(repo_owner, repo_name):
-    url = 'https://api.github.com/repos/{0}/{1}/issues'\
-        .format(repo_owner, repo_name)
-    response = requests.get(url)
-    return len(response.json())
+    date_week_ago_to_str = date_week_ago.strftime("%Y-%m-%dT%H:%M:%S")
+    payload = {
+            'q': 'created:>='+date_week_ago_to_str,
+            'sort': 'star',
+            'order': 'desc',
+            'per_page': top_size
+    }
+    url = "https://api.github.com/search/repositories"
+    response = requests.get(url, params=payload)
+    return response.json()['items']
 
 
 def pretty_print(repositories):
+    print(repositories)
     for repo in repositories:
         print("\nName: {0}".format(repo['name']))
         print("Url: {0}".format(repo['html_url']))
-        print("Count of issues {0}".format(
-            get_open_issues_amount(repo['owner']['login'], repo['name'])))
+        print("Count of issues {0} issues {1}".format(
+            repo['owner']['login'], repo['open_issues_count']))
 
 
 if __name__ == '__main__':
-    trends_rep = get_trending_repositories(10)
+    NUM_OF_TRENDS = 10
+    trends_rep = get_trending_repositories(NUM_OF_TRENDS)
     pretty_print(trends_rep)
