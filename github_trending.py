@@ -17,7 +17,6 @@ def get_trending_repositories(top_size):
 
 
 def pretty_print(repositories):
-    print(repositories)
     for repo in repositories:
         print("\nName: {0}".format(repo['name']))
         print("Url: {0}".format(repo['html_url']))
