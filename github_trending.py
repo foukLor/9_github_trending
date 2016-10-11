@@ -3,7 +3,8 @@ from datetime import date, timedelta
 
 
 def get_trending_repositories(top_size):
-    date_week_ago = date.today() - timedelta(days=7)
+    TRENDS_FOR_PERIOD = 7
+    date_week_ago = date.today() - timedelta(days=TRENDS_FOR_PERIOD)
     date_week_ago_to_str = date_week_ago.strftime("%Y-%m-%dT%H:%M:%S")
     payload = {
             'q': 'created:>='+date_week_ago_to_str,
